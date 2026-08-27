@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Producto extends Model
 {
@@ -28,7 +29,7 @@ class Producto extends Model
     public function getImagenUrlAttribute()
     {
         $path = $this->imagen_path ?: 'productos/default.png';
-        return Storage::disk('public')->url($path);
+        return Storage::url($path);
     }
 
     protected $appends = ['imagen_url'];
