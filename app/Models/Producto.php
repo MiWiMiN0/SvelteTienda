@@ -1,21 +1,20 @@
 <?php
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Producto extends Model
 {
-    public $primaryKey = 'producto_id';
+    
+    use HasFactory;
 
-    public $fillable = [
-        'nombre_producto',
+    
+    protected $fillable = [
+        'nombre',
         'descripcion',
-        'precio_unitario',
-        'stock',
-        'iva_porcentaje',
-        'imagen_path'
+        'precio',
+        'imagen',
     ];
 
     public $timestamps = false;

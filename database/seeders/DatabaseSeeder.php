@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AdminSeeder::class,
             ClienteSeeder::class,
+            ProductoSeeder::class,
         ]);
     }
 }

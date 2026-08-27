@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string("nombre_producto",100);
             $table->text("descripcion")->nullable();
             $table->decimal("precio_unitario", 10, 2);
-            $table->integer("stock");
+            $table->string('imagen')->nullable();
+            $table->integer("stock")->default(0);
             $table->decimal("iva_porcentaje", 4, 2)->default(19.00);
         });
     }
