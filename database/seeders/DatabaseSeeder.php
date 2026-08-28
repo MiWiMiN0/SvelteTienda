@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             ClienteSeeder::class,
             ProductoSeeder::class,
+            FacturaSeeder::class,
         ]);
     }
 }

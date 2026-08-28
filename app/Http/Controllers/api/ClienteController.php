@@ -16,16 +16,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        //
-        $user = Auth::user();
-
-        if ($user->role->nombre == 'admin') {
-            $clientes = Cliente::with('facturas')->get();
-            return response()->json($clientes);
-        } else if ($user->role->nombre == 'cliente') {
-            $clientes = Cliente::with('facturas')->where('numero_documento',$user->cliente->numero_documento)->get();
-            return response()->json($clientes);
-        }
+        return response()->json(Cliente::with('facturas')->get());
     }
 
     /**
