@@ -23,7 +23,7 @@
       <img src={producto.imagen} alt={producto.nombre_producto} width="200" />
       
       <details>
-      <!--"details" crea un elemento desplegable que muestra información adicional sobre el producto  -->
+      <!--"details" crea un elemento desplegable que muestra información adicional sobre el producto  (no prestar atencio prueba)-->
       
         <summary>{producto.nombre_producto}</summary>
         <!--"summary" crea un resumen del producto que se muestra cuando el elemento "details" está desplegado -->
