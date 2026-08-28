@@ -3,11 +3,13 @@
 //se usa usar TypeScript "ts"
 
 //"onMount" espera a que la página este completamente lista y cargada en el navegador
-  import { onMount } from 'svelte';
+  import { onMount , tick } from 'svelte';
+
+
   // "$state" interfaz reacciona cuando cambia
   let productos: any[] = $state([]);
 
-  //-----------------------------------------
+  //----------------------  ALAN  -------------------
   let clientes: any[] = $state([]);
   let facturas: any[] = $state([]);
   let rol = $state('');
@@ -15,14 +17,14 @@
   let fechaDesde = $state('');
   let mensajeFacturas = $state('');
 
-  //-----------------------------------------
+  //-----------------------  JESUS --------------------------
 
   onMount(async () => {
     //"fetch" pide la información que esta guardada en la base de datos mysql
     const respuesta = await fetch('http://localhost:8000/api/productos');
     // "await" espera a que la respuesta llegue y luego la convierte en un objeto JSON para la variable productos ".data"
     productos = (await respuesta.json()).data;
-
+//----------------------  ALAN  -------------------
     try {
       const respuestaClientes = await fetch('http://localhost:8000/api/cliente', {
         headers: {
@@ -30,10 +32,6 @@
           Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
         }
       });
-
-      if (!respuestaClientes.ok) {
-        throw new Error('Inicia sesión para consultar las facturas.');
-      }
 
       clientes = await respuestaClientes.json();
       facturas = clientes.flatMap((cliente) => cliente.facturas ?? []);
@@ -53,6 +51,7 @@
         )
       );
   };
+  //-------------------------------------------------
 </script>
 
 <h1>Productos Tienda</h1>
@@ -76,7 +75,7 @@
   {/each}
 </ul>
 
-<!-- /////////////////////////////////////////////////////////////////////// -->
+<!-- //////////////////////////////   ALAN   //////////////////////////////////////// -->
 
 <!-- consulta de facturas con rol, cliente y fecha con hora -->
 <section class="facturas-nuevo">
@@ -125,3 +124,6 @@
     </ul>
   {/if}
 </section>
+
+<!-- //////////////////////////////   LUIS  //////////////////////////////////////// -->
+
