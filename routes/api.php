@@ -6,9 +6,14 @@ use App\Http\Controllers\api\ClienteController;
 use App\Http\Controllers\api\ProductoController;
 use App\Http\Controllers\api\FacturaController;
 use App\Http\Controllers\Api\AuthController;
+use App\Models\User;
 
 
 Route::apiResource('productos', ProductoController::class);
+
+Route::get('usuarios', function () {
+    return response()->json(User::with('role')->get());
+});
 
 Route::apiResource('cliente', ClienteController::class)->only(['index', 'show']);
 Route::apiResource('factura', FacturaController::class)->only(['index', 'show']);

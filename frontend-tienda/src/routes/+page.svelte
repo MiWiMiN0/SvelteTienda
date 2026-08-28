@@ -17,6 +17,13 @@
   let fechaDesde = $state('');
   let mensajeFacturas = $state('');
 
+  //-----------------------  LUIS --------------------------
+  let usuarios: any[] = $state([]);
+  let cargando = $state(true);
+  let error = $state('');
+  let usuarioActual: any = $state({});
+  let modalEl: HTMLDivElement;
+  let bsModal: any;
   //-----------------------  JESUS --------------------------
 
   onMount(async () => {
@@ -38,7 +45,30 @@
     } catch (error) {
       mensajeFacturas = error instanceof Error ? error.message : 'No se pudieron cargar las facturas.';
     }
+
+    //-----------------------  LUIS --------------------------
+    await cargarUsuarios();
+    bsModal = new (window as any).bootstrap.Modal(modalEl);
   });
+
+  async function cargarUsuarios() {
+    cargando = true;
+    try {
+      const respuesta = await fetch('http://localhost:8000/api/usuarios');
+      if (!respuesta.ok) throw new Error('Error al listar usuarios');
+      usuarios = await respuesta.json();
+    } catch (e) {
+      error = e instanceof Error ? e.message : 'Error al cargar usuarios';
+    } finally {
+      cargando = false;
+    }
+  }
+
+  function abrirModalVer(usuario: any) {
+    usuarioActual = { ...usuario };
+    bsModal.show();
+  }
+  //-----------------------  ALAN --------------------------
 
   const consultarFacturas = () => {
     const fecha = fechaDesde ? new Date(fechaDesde).getTime() : 0;
@@ -125,5 +155,69 @@
   {/if}
 </section>
 
-<!-- //////////////////////////////   LUIS  //////////////////////////////////////// -->
+<!----------------------------- LUIS ----------------------------->
+<div class="container mt-4 mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Listado de Usuarios</h2>
+  </div>
+
+  {#if error}
+    <div class="alert alert-danger">{error}</div>
+  {/if}
+
+  {#if cargando}
+    <p>Cargando usuarios...</p>
+  {:else}
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th class="text-end">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each usuarios as usuario (usuario.id)}
+          <tr>
+            <td>{usuario.id}</td>
+            <td>{usuario.name}</td>
+            <td>{usuario.email}</td>
+            <td>{usuario.role?.nombre ?? 'Sin rol'}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary" onclick={() => abrirModalVer(usuario)}>
+                Ver usuario
+              </button>
+            </td>
+          </tr>
+        {:else}
+          <tr>
+            <td colspan="5" class="text-center">No hay usuarios registrados</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {/if}
+</div>
+
+<!-- Modal Bootstrap de solo lectura -->
+<div class="modal fade" tabindex="-1" bind:this={modalEl} aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Información del usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Nombre:</strong> {usuarioActual.name}</p>
+        <p><strong>Correo:</strong> {usuarioActual.email}</p>
+        <p><strong>Rol:</strong> {usuarioActual.role?.nombre ?? 'Sin rol'}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
